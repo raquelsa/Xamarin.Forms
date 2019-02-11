@@ -450,5 +450,25 @@ namespace Xamarin.Forms.Xaml.UnitTests
 
 			Assert.That(myButton.BackgroundColor, Is.Not.EqualTo(Color.Blue));
 		}
+
+		[Test]
+		public void ShellTypeNotParsed()
+		{
+			var xaml = @"
+				<Shell xmlns = ""http://xamarin.com/schemas/2014/forms"">
+				   <ShellItem>
+					   <ShellSection Title = ""Browse"" >
+						   <ShellContent />
+					   </ShellSection>
+					</ShellItem>
+				</Shell>";
+
+			Device.SetFlags(new List<string> { "Shell_Experimental" });
+			var shell = (Shell)XamlLoader.Create(xaml, true);
+
+			ShellSection section = shell?.Items[0]?.Items[0];
+
+			Assert.That(section.Title, Is.EqualTo("Browse"));
+		}
 	}
 }
